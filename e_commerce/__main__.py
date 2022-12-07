@@ -1,8 +1,10 @@
+"""Main module for generation of the recommentations"""
+
 import os
 import sys
 
 import pickle
-import logging 
+import logging
 
 import e_commerce.load_data_helper as ldh
 import e_commerce.model_helper as mh
@@ -12,40 +14,65 @@ from e_commerce.config import get_conf
 logging.getLogger().setLevel(logging.INFO)
 logging.getLogger().addHandler(logging.StreamHandler(sys.stdout))
 
+
 def build_dirs():
+    """Creates the folder structure"""
+
     if not os.path.exists(get_conf().DATA):
         os.mkdir(get_conf().DATA)
 
     if not os.path.exists(get_conf().MODEL):
         os.mkdir(get_conf().MODEL)
 
+
 def generate_purchase_subset():
+    """Reads the original data files for generating a new filtered files"""
     ldh.preprocess_data()
 
+
 def main(score=False):
+    """Manages all the process to generate the recommendation
+
+    :param score: Sets if executes the calculate of the score or not
+    :type score: bool, optional
+    """
     build_dirs()
 
     train, test = ldh.get_purchase_data()
     categories = ldh.get_categories(train, test)
 
-    del(test)
+    del test
 
     train = mh.filter_train_data(train)
     freq_matrix = mh.generate_frequent_matrix(train, categories)
     model = mh.fit_model(freq_matrix)
 
     neighbors = rec.get_neighbors(model, freq_matrix)
-    users_recomentation_matrix = rec.get_users_recommendations(train, neighbors, freq_matrix)
+    users_recomentation_matrix = rec.get_users_recommendations(
+        train, neighbors, freq_matrix
+    )
 
-    with open(os.path.join(get_conf().DATA, get_conf().RECOMMENDATION_FILE_NAME), "wb") as f:
+    with open(
+        os.path.join(get_conf().DATA, get_conf().RECOMMENDATION_FILE_NAME), "wb"
+    ) as f:
         pickle.dump(users_recomentation_matrix, f)
 
-    logging.info("File {Configuration.RECOMMENDATION_FILE_NAME} with all user recommendations generated in {Configuration.DATA} folder")
+    logging.info(
+        "File {Configuration.RECOMMENDATION_FILE_NAME} with all user recommendations generated in {Configuration.DATA} folder"
+    )
 
     if score:
         get_score(get_conf().RECOMMENDATION_FILE_NAME, "test.csv")
 
+
 def get_score(recommendation_path: str, test_path: str):
+    """Calculates the efficiency of the recommendations
+
+    :param recommendation_path: Name of the recommendation file. It must be placed in data folder
+    :type recommendation_path: str
+    :param test_path:  Name of the test file. It must be placed in data folder
+    :type test_path: str
+    """
 
     try:
         score = rec.get_score(recommendation_path, test_path)
@@ -55,8 +82,9 @@ def get_score(recommendation_path: str, test_path: str):
 
     logging.info(f"Score reached: {round(score * 100, 2)}%")
 
+
 if __name__ == "__main__":
-    
+
     if len(sys.argv) > 1:
         if sys.argv[1] == "init":
             generate_purchase_subset()
