@@ -23,6 +23,8 @@ pylint = "^2.15.8"
 sphinx = "^5.3.0"
 pytest = "^7.2.0"
 pre-commit = "^2.20.0"
+coverage = "^6.5.0"
+pytest-cov = "^4.0.0"
 
 [build-system]
 requires = ["poetry-core"]
