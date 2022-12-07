@@ -32,7 +32,7 @@ def fill_matrix(
 
     for _, row in reference_sales.iterrows():
         for cat in get_conf().CAT_FIELDS:
-            if row[cat] is not np.nan:
+            if not pd.isna(row[cat]):
                 m_filled.loc[row["user_id"], row[cat]] += 1
 
     if inplace:

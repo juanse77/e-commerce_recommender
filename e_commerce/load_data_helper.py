@@ -44,7 +44,7 @@ def filter_data(data: pd.DataFrame, file_name: str) -> pd.DataFrame:
     return data_filtered
 
 
-def select_client_subset(data: pd.DataFrame) -> List[str]:
+def select_client_subset(data: pd.DataFrame) -> list[str]:
     """Selects the client ids with at least n sales registered and deletes the rows with no main category
 
     :param data: Dataframe with the sales
@@ -67,14 +67,16 @@ def select_client_subset(data: pd.DataFrame) -> List[str]:
     return user_ids
 
 
-def get_purchase_data() -> Tuple[pd.DataFrame, pd.DataFrame]:
+def get_purchase_data(unit_test=False) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Returns the purchase filtered data ready to be used
 
     :return: train and test dataframes
     :rtype: pd.DataFrame
     """
-    train = pd.read_csv(os.path.join(get_conf().DATA, "train.csv"))
-    test = pd.read_csv(os.path.join(get_conf().DATA, "test.csv"))
+    opt = 0 if not unit_test else 1
+
+    train = pd.read_csv(os.path.join(get_conf().DATA, get_conf().DB_TRAIN[opt]))
+    test = pd.read_csv(os.path.join(get_conf().DATA, get_conf().DB_TEST[opt]))
 
     return train, test
 
@@ -99,7 +101,7 @@ def preprocess_data():
     logging.info(f"Files 'train.csv', 'test.csv' generated in {get_conf().DATA} folder")
 
 
-def get_categories(train: pd.DataFrame, test: pd.DataFrame) -> List[str]:
+def get_categories(train: pd.DataFrame, test: pd.DataFrame) -> list[str]:
     """Generate a list of unique categories of the items in the filtered data
 
     :param train: Training dataframe to be processed

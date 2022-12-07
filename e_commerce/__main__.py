@@ -30,7 +30,7 @@ def generate_purchase_subset():
     ldh.preprocess_data()
 
 
-def main(score=False):
+def main(score=False, unit_test=False):
     """Manages all the process to generate the recommendation
 
     :param score: Sets if executes the calculate of the score or not
@@ -38,7 +38,7 @@ def main(score=False):
     """
     build_dirs()
 
-    train, test = ldh.get_purchase_data()
+    train, test = ldh.get_purchase_data(unit_test)
     categories = ldh.get_categories(train, test)
 
     del test
@@ -52,13 +52,15 @@ def main(score=False):
         train, neighbors, freq_matrix
     )
 
+    opt = 0 if not unit_test else 1
+
     with open(
-        os.path.join(get_conf().DATA, get_conf().RECOMMENDATION_FILE_NAME), "wb"
+        os.path.join(get_conf().DATA, get_conf().RECOMMENDATION_FILE_NAME[opt]), "wb"
     ) as f:
         pickle.dump(users_recomentation_matrix, f)
 
     logging.info(
-        "File {Configuration.RECOMMENDATION_FILE_NAME} with all user recommendations generated in {Configuration.DATA} folder"
+        f"File {get_conf().RECOMMENDATION_FILE_NAME[opt]} with all user recommendations generated in {get_conf().DATA} folder"
     )
 
     if score:

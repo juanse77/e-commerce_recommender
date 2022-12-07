@@ -30,9 +30,10 @@ def get_neighbors(model: NearestNeighbors, freq_matrix: pd.DataFrame) -> pd.Data
 
     return neighbor_ids
 
+
 def get_users_recommendations(
     data: pd.DataFrame, neighbors: pd.DataFrame, freq_matrix: pd.DataFrame
-) -> Tuple[str, List[List[str]]]:
+) -> list[tuple[str, list[list[str]]]]:
     """Returns a tuple with a list of code items recommendated for each client
 
     :param data: Dataframe with purchase information
@@ -61,6 +62,7 @@ def get_users_recommendations(
         )
 
     return users_recommendation_matrix
+
 
 def get_score(recommendation_path: str, test_path: str):
     """Figures out the estimated score reached by the method
