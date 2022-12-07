@@ -1,0 +1,9 @@
+DATA: "data"
+MODEL: "model"
+FILTERED_TRAIN_DATA: "filtered_train_data.parquet"
+FREQUENT_MATRIX: "freq_matrix"
+MODEL_FILE_NAME: "model.pkl"
+RECOMMENDATION_FILE_NAME: "recommendations.pkl"
+N_ITEMS: 8
+CAT_FIELDS: ['cat_0', 'cat_1', 'cat_2', 'cat_3']
+SUBSET_FIELDS: ['user_id', 'product_id', 'cat_0', 'cat_1', 'cat_2', 'cat_3']
