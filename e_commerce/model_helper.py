@@ -23,6 +23,15 @@ def fill_matrix(
     :type inplace: bool, optional
     :return: The matrix filled
     :rtype: pd.DataFrame
+
+    >>> a = pd.DataFrame([[0, 0], [0, 0]], columns=["a", "b"], index=["id1", "id2"])
+    >>> sales = pd.DataFrame([["id1", "a", "b", np.nan, np.nan],
+    ... ["id1", np.nan, "b", np.nan, np.nan], ["id2", np.nan, "b", "a", np.nan], ["id1", "a", "b", np.nan, "a"]],
+    ... columns=['user_id', 'cat_0', 'cat_1', 'cat_2', 'cat_3'])
+    >>> fill_matrix(a, sales)
+         a  b
+    id1  3  3
+    id2  1  1
     """
 
     if inplace:
