@@ -1,8 +1,8 @@
-name: Master actions
+name: Main actions
 on:
   push:
     branches:
-      - master
+      - main
 jobs:
   testing:
     runs-on: ubuntu-latest
