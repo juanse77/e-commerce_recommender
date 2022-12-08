@@ -29,14 +29,14 @@ You can find the original datasets in https://www.kaggle.com/datasets/dschettler
 
 ```python
     # Recreates the CSVs file from the original datasets
-    python e_commerce init
+    python -m e_commerce init
 
     # Launches the program
-    python e_commerce
+    python -m e_commerce
 
     # If you have test.csv file you can calculate the estimation of the
     # efficiency of the program calling
-    python e_commerce score
+    python -m e_commerce score
 ```
 
 The result of the program consists in one file in binary pickle that contains a matrix with one list 

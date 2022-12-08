@@ -1,3 +1,5 @@
+"""Module to load the configuration"""
+import os
 import yaml
 from yaml.loader import SafeLoader
 
@@ -29,7 +31,9 @@ class Configuration:
         """
 
         if len(cls.instance) == 0:
-            with open("configuration.yaml") as f:
+            with open(
+                os.path.join(os.path.dirname(__file__), "..", "configuration.yaml")
+            ) as f:
                 data = yaml.load(f, Loader=SafeLoader)
 
             cls.instance.append(cls(data))
