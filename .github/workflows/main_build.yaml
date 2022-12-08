@@ -36,10 +36,11 @@ jobs:
       - name: build
         run: poetry build
       - name: Publish to GH Releases
-        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
         with:
-          files: ${{ github.workspace }}/dist/*
+          files: |
+            ${{ github.workspace }}/dist/*
       - name: Set up QEMU
         if: success()
         uses: docker/setup-qemu-action@v2
