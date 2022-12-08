@@ -3,8 +3,11 @@ on:
   push:
     branches:
       - main
+env:
+  USERNAME: ${{ secrets.DOCKER_HUB_USERNAME }}
+  PASSWORD: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
 jobs:
-  testing:
+  Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -36,7 +39,7 @@ jobs:
         if: success()
         run: poetry build
       - name: Publish to GH Releases
-        if: success() && startsWith(github.ref, 'refs/tags/v')
+        if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v1
         with:
           files: ${{ github.workspace }}/dist/*
@@ -50,13 +53,13 @@ jobs:
         if: success()
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: ${{ env.USERNAME }}
+          password: ${{ env.PASSWORD }}
       - name: Build and push
         if: success()
         uses: docker/build-push-action@v3
         with:
           context: .
-          file: ./docker/Dockerfile
+          file: ${{ github.workspace }}/docker/Dockerfile
           push: true
           tags: juanse77/e-commerce_recommender:latest
