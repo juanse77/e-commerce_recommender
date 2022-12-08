@@ -35,7 +35,7 @@ You can find the original datasets in https://www.kaggle.com/datasets/dschettler
     python e_commerce
 
     # If you have test.csv file you can calculate the estimation of the
-    #  efficiency of the program calling
+    # efficiency of the program calling
     python e_commerce score
 ```
 
