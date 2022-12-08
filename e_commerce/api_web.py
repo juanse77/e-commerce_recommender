@@ -33,7 +33,7 @@ async def root():
 
 @app.get("/get-recommendation")
 async def recommend(client_id: int) -> dict:
-    """Returns a list with items recommendations for a client"""
+    """Returns a list of items recommendations for a client"""
 
     for user, recommendations in recommendations_matrix:
         if user == client_id:
