@@ -2,7 +2,7 @@ name: Develop actions
 on:
   push:
     branches:
-      - develop
+      - main
 jobs:
   testing:
     runs-on: ubuntu-latest
