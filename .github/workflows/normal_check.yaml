@@ -43,6 +43,9 @@ jobs:
       - name: Abort step when recommendations file doesn't change
         if: steps.changed-files-specific.outputs.any_changed == 'false'
         run: |
+          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
+            echo "$file was changed"
+          done
           exit 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
