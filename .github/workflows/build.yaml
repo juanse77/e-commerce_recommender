@@ -76,7 +76,7 @@ jobs:
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: arn:aws:iam::147966455653:oidc-provider/token.actions.githubusercontent.com
+          role-to-assume: arn:aws:iam::147966455653:oidc-provider/token.actions.githubusercontent.com/docker_administrator_51277
           aws-region: us-west-2
       - name: Login to Amazon ECR
         id: login-ecr
@@ -84,7 +84,7 @@ jobs:
       - name: Build, tag, and push docker image to Amazon ECR
         env:
           REGISTRY: ${{ steps.login-ecr.outputs.registry }}
-          REPOSITORY: e-commerce_recommender
+          REPOSITORY: ${{ secrets.DOCKER_IMAGE }}
           IMAGE_TAG: ${{ github.sha }}
         run: |
           docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG f docker/Dockerfile --build-arg version={{ env.VERSION }} .

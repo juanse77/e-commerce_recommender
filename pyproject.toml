@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "e-commerce"
-version = "1.0.26"
+version = "1.0.27"
 description = "Final project for the MLOps course"
 authors = ["Juan Sebastián Ramírez Artiles <juanseraar@hotmail.com>"]
 readme = "README.md"
