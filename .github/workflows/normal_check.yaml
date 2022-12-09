@@ -1,6 +1,8 @@
 name: Develop actions
 on:
   push:
+    branches:
+      - "main"
     tags-ignore:
       - "**"
 jobs:
