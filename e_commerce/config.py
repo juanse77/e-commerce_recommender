@@ -5,7 +5,7 @@ from yaml.loader import SafeLoader
 
 
 class Configuration:
-    """Class to manage the configuration"""
+    """Class for managing the configuration"""
 
     instance: list = []
 
