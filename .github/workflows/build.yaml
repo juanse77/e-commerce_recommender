@@ -5,6 +5,7 @@ on:
       - "**"
 jobs:
   Build:
+    name: Build
     runs-on: ubuntu-latest
     environment: Docker_hub
     steps:
@@ -62,3 +63,30 @@ jobs:
           file: ${{ github.workspace }}/docker/Dockerfile
           push: true
           tags: ${{ secrets.DOCKER_HUB_USERNAME }}/e-commerce_recommender:latest
+  push_image_AWS:
+    name: Build Image
+    needs: Build
+    runs-on: ubuntu-latest
+    environment: AWS
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+      - name: Install Poetry
+        uses: snok/install-poetry@v1
+      - name: Set the value
+        run: |
+          echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
+      - uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+        with:
+          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
+          dockefile: data/Dockerfile
+          repo: docker/repopublic.ecr.aws/a4q4t8c3/e-commerce_recommender
+          region: us-west-2
+          tags: latest,${{ github.sha }}
+          create_repo: true
+          image_scanning_configuration: true
+          extra_build_args: version=${{ env.VERSION }}
