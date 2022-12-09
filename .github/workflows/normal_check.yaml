@@ -34,19 +34,14 @@ jobs:
           result_path: coverage.lcov
           min_coverage: 70
           token: ${{ github.token }}
-      - name: Verify Changed files
-        uses: tj-actions/changed-files@v34
-        id: changed-files-specific
+      - uses: dorny/paths-filter@v2
+        id: changes
         with:
-          files: |
-            data/recommendations.pkl
-      - name: Abort step when recommendations file doesn't change
-        if: steps.changed-files-specific.outputs.any_changed == 'false'
-        run: |
-          for file in ${{ steps.changed-files.outputs.all_changed_files }}; do
-            echo "$file was changed"
-          done
-          exit 0
+          filters: |
+            data:
+              - 'data/recommendations.pkl'
+      - if: steps.changes.outputs.src == 'false'
+        run: exit 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
