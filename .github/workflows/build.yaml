@@ -70,14 +70,6 @@ jobs:
     environment: AWS
     steps:
       - uses: actions/checkout@v3
-      - uses: actions/setup-python@v4
-        with:
-          python-version: "3.10"
-      - name: Install Poetry
-        uses: snok/install-poetry@v1
-      - name: Set the value
-        run: |
-          echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
       - uses: docker://ghcr.io/kciter/aws-ecr-action:latest
         with:
           access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
@@ -89,4 +81,5 @@ jobs:
           tags: latest,${{ github.sha }}
           create_repo: true
           image_scanning_configuration: true
-          extra_build_args: version=${{ env.VERSION }}
+          extra_build_args: |
+            version=${{ env.VERSION }}
