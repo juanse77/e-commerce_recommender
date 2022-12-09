@@ -8,7 +8,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: Docker_hub
     steps:
-      - run: echo ${{ github.action_ref }}
+      - name: checking ref
+        if: ${{ github.action_ref }} == null
+        run: echo "not ref"
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
