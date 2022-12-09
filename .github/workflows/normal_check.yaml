@@ -7,6 +7,7 @@ jobs:
   testing:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/tags/v') != true
+    environment: Docker_hub
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -34,13 +35,13 @@ jobs:
           min_coverage: 70
           token: ${{ github.token }}
       - name: Verify Changed files
-        uses: tj-actions/verify-changed-files@v12
-        id: verify-changed-files
+        uses: tj-actions/changed-files@v34
+        id: changed-files-specific
         with:
           files: |
             data/recommendations.pkl
       - name: Abort step when recommendations file doesn't change
-        if: steps.verify-changed-files.outputs.files_changed == true
+        if: steps.changed-files-specific.outputs.any_changed == 'false'
         run: |
           exit 0
       - name: Set up QEMU
