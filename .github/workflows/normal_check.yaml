@@ -41,6 +41,7 @@ jobs:
             data:
               - 'data/recommendations.pkl'
       - if: steps.changes.outputs.data == 'false'
-        run: exit 0
+        run: |
+          exit 1
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
