@@ -39,7 +39,7 @@ jobs:
           filters: |
             data:
               - 'data/recommendations.pkl'
-      - name: Set up QEMU
+      - name: Set up QEMU # If 'data/recommendations.pkl' changes docker image will be built and pushed
         if: steps.changes.outputs.data == 'true'
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
