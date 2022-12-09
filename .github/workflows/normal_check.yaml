@@ -6,7 +6,7 @@ on:
 jobs:
   testing:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v') != 'true'
+    if: startsWith(github.ref, 'refs/tags/v') != true
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
@@ -40,9 +40,9 @@ jobs:
           files: |
             data/recommendations.pkl
       - name: Abort step when recommendations file doesn't change
-        if: steps.verify-changed-files.outputs.files_changed == 'false'
+        if: steps.verify-changed-files.outputs.files_changed == true
         run: |
-          exit 1
+          exit 0
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Set up Docker Buildx
