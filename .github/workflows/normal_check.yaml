@@ -8,7 +8,7 @@ jobs:
     runs-on: ubuntu-latest
     environment: Docker_hub
     steps:
-      - run: echo github.action_ref
+      - run: echo ${{ github.action_ref }}
       - uses: actions/checkout@v3
       - uses: actions/setup-python@v4
         with:
