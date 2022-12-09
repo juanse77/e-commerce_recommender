@@ -70,17 +70,19 @@ jobs:
     environment: AWS
     steps:
       - uses: actions/checkout@v3
-      - uses: docker://ghcr.io/kciter/aws-ecr-action:latest
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1 # More information on this action can be found below in the 'AWS Credentials' section
         with:
-          access_key_id: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          secret_access_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          account_id: ${{ secrets.AWS_ACCOUNT_ID }}
-          dockefile: docker/Dockerfile
-          repo: docker/repopublic.ecr.aws/a4q4t8c3/e-commerce_recommender
-          region: us-west-2
-          tags: latest,${{ github.sha }}
-          create_repo: true
-          image_scanning_configuration: true
-          extra_build_args: |
-            version=${{ env.VERSION }}
-          path: .
+          role-to-assume: arn:aws:iam::123456789012:role/my-github-actions-role
+          aws-region: us-west-2
+      - name: Login to Amazon ECR
+        id: login-ecr
+        uses: aws-actions/amazon-ecr-login@v1
+      - name: Build, tag, and push docker image to Amazon ECR
+        env:
+          REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+          REPOSITORY: e-commerce_recommender
+          IMAGE_TAG: ${{ github.sha }}
+        run: |
+          docker build -t $REGISTRY/$REPOSITORY:$IMAGE_TAG f docker/Dockerfile --build-arg version={{ env.VERSION }} .
+          docker push $REGISTRY/$REPOSITORY:$IMAGE_TAG
