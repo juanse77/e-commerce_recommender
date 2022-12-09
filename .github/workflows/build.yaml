@@ -2,7 +2,7 @@ name: Tagged action
 on:
   push:
     tags:
-      - "*"
+      - "**"
 jobs:
   Build:
     runs-on: ubuntu-latest
