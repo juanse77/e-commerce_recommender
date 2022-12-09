@@ -1,6 +1,8 @@
 FROM python:3.10
 
-RUN pip install https://github.com/juanse77/e-commerce_recommender/releases/download/v1.0.10/e_commerce-1.0.10-py3-none-any.whl
+ARG version
+
+RUN pip install https://github.com/juanse77/e-commerce_recommender/releases/download/v$version/e_commerce-$version-py3-none-any.whl
 
 WORKDIR /app/data
 
