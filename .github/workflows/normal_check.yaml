@@ -6,7 +6,7 @@ on:
 jobs:
   testing:
     runs-on: ubuntu-latest
-    if: startsWith(github.ref, 'refs/tags/v') != true
+    if: startsWith(github.ref, 'refs/tags/v') != 'true'
     environment: Docker_hub
     steps:
       - uses: actions/checkout@v3
