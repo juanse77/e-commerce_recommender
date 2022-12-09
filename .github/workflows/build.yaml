@@ -83,3 +83,4 @@ jobs:
           image_scanning_configuration: true
           extra_build_args: |
             version=${{ env.VERSION }}
+          path: .
