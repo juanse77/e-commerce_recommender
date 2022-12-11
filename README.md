@@ -41,3 +41,6 @@ You can find the original datasets in https://www.kaggle.com/datasets/dschettler
 
 The result of the program consists in one file in binary pickle that contains a matrix with one list 
 of recommended product codes for each client.
+
+## Score reached
+In the tests carried out, an approximate efficiency of 16% was achieved.
