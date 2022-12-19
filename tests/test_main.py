@@ -1,3 +1,4 @@
+"""Module for generating recommendations"""
 import os
 import pickle
 

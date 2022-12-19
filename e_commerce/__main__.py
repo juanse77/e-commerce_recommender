@@ -64,7 +64,9 @@ def main(score=False, unit_test=False):
         pickle.dump(users_recomentation_matrix, f)
 
     logging.info(
-        f"File {get_conf().RECOMMENDATION_FILE_NAME[opt]} with all user recommendations generated in {get_conf().DATA} folder"
+        "File %s with all user recommendations generated in %s folder",
+        get_conf().RECOMMENDATION_FILE_NAME[opt],
+        get_conf().DATA,
     )
 
     if score:
@@ -86,7 +88,7 @@ def get_score(recommendation_path: str, test_path: str):
         logging.error(fe.strerror)
         sys.exit(1)
 
-    logging.info(f"Score reached: {round(score * 100, 2)}%")
+    logging.info("Score reached: %.2f%%", round(score * 100, 2))
 
 
 if __name__ == "__main__":

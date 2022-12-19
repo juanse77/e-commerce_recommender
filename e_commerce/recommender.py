@@ -2,15 +2,22 @@
 
 import os
 
+import pickle
 import numpy as np
 import pandas as pd
-import pickle
 
 from sklearn.neighbors import NearestNeighbors
 from e_commerce.config import get_conf
 
 
 def get_purchases_matrix(data: pd.DataFrame) -> pd.DataFrame:
+    """Generates one matrix with the last bought items of each client
+
+    :param data: Matrix of the purchases
+    :type data: pd.DataFrame
+    :return: Matrix of client purchases
+    :rtype: pd.DataFrame
+    """
     user_ids = data["user_id"].unique()
 
     purchases_matrix = []
@@ -96,7 +103,8 @@ def get_users_recommendations(
 def get_score(recommendation_path: str, test_path: str):
     """Figures out the estimated score reached by the method
 
-    :param recommendation_path: Name of the recommendations file. It must be placed in the data folder
+    :param recommendation_path: Name of the recommendations file. It must be placed
+    in the data folder
     :type recommendation_path: str
     :param test_path: Name of the test file. It must be placed in the data folder
     :type test_path: str

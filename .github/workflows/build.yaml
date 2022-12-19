@@ -51,7 +51,7 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_HUB_USERNAME }}
           password: ${{ secrets.DOCKER_HUB_ACCESS_TOKEN }}
-      - name: Set the value
+      - name: Get the version of the package
         run: |
           echo "VERSION=$(poetry version -s)" >> $GITHUB_ENV
       - name: Build and push
