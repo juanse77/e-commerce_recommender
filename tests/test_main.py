@@ -1,6 +1,8 @@
 import os
 import pickle
 
+import numpy as np
+
 from e_commerce.config import get_conf
 from e_commerce.__main__ import main
 
@@ -19,4 +21,6 @@ def test_main():
     ) as f:
         rec2 = pickle.load(f)
 
-    assert rec1 == rec2
+    for user1, user2 in zip(rec1, rec2):
+        assert user1[0] == user2[0]
+        assert np.array_equal(user1[1], user2[1])

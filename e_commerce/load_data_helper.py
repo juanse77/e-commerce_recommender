@@ -70,6 +70,8 @@ def select_client_subset(data: pd.DataFrame) -> list[str]:
 def get_purchase_data(unit_test=False) -> tuple[pd.DataFrame, pd.DataFrame]:
     """Returns the purchase filtered data ready to be used
 
+    :param unit_test: Flag for activating test mode
+    :type unit_test: Boolean
     :return: train and test dataframes
     :rtype: pd.DataFrame
     """

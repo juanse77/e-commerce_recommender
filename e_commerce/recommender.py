@@ -2,11 +2,29 @@
 
 import os
 
+import numpy as np
 import pandas as pd
 import pickle
 
 from sklearn.neighbors import NearestNeighbors
 from e_commerce.config import get_conf
+
+
+def get_purchases_matrix(data: pd.DataFrame) -> pd.DataFrame:
+    user_ids = data["user_id"].unique()
+
+    purchases_matrix = []
+    for user_id in user_ids:
+        purchases_matrix.append(
+            pd.DataFrame(
+                [data[data["user_id"] == user_id]["product_id"].to_list()],
+                index=[user_id],
+            ).astype("int32")
+        )
+
+    purchases_matrix = pd.concat(purchases_matrix)
+
+    return purchases_matrix
 
 
 def get_neighbors(model: NearestNeighbors, freq_matrix: pd.DataFrame) -> pd.DataFrame:
@@ -36,7 +54,7 @@ def get_users_recommendations(
 ) -> list[tuple[str, list[list[str]]]]:
     """Returns a tuple with a list of code items recommendated for each client
 
-    :param data: Dataframe with purchase information
+    :param data: Dataframe with purchases information
     :type data: pd.DataFrame
     :param neighbors: Dataframe with information of the similar clientes for each client
     :type neighbors: pd.DataFrame
@@ -51,14 +69,25 @@ def get_users_recommendations(
     neighbors.reset_index()
     for i, user_neighbors in neighbors.iterrows():
 
-        user_recommendation_list = (
-            data[data["user_id"].isin(user_neighbors.values)]["product_id"]
-            .unique()
-            .tolist()
+        user_recommendation_list = np.unique(
+            data.loc[user_neighbors.values]
+            .to_numpy()
+            .reshape(
+                -1,
+            )
         )
 
+        products_of_user = data.loc[freq_matrix.index[i]].to_list()
+
         users_recommendation_matrix.append(
-            (freq_matrix.index[i], user_recommendation_list)
+            (
+                freq_matrix.index[i],
+                [
+                    prd
+                    for prd in user_recommendation_list
+                    if prd not in products_of_user
+                ],
+            )
         )
 
     return users_recommendation_matrix
@@ -91,6 +120,5 @@ def get_score(recommendation_path: str, test_path: str):
         for user_purchase in future_user_purchase:
             if user_purchase in recommendation_list:
                 cont_success += 1
-                break
 
     return cont_success / len(recommendations)

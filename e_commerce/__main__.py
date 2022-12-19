@@ -48,8 +48,12 @@ def main(score=False, unit_test=False):
     model = mh.fit_model(freq_matrix)
 
     neighbors = rec.get_neighbors(model, freq_matrix)
+    purchases_matrix = rec.get_purchases_matrix(train)
+
+    del train
+
     users_recomentation_matrix = rec.get_users_recommendations(
-        train, neighbors, freq_matrix
+        purchases_matrix, neighbors, freq_matrix
     )
 
     opt = 0 if not unit_test else 1
@@ -64,7 +68,7 @@ def main(score=False, unit_test=False):
     )
 
     if score:
-        get_score(get_conf().RECOMMENDATION_FILE_NAME, "test.csv")
+        get_score(get_conf().RECOMMENDATION_FILE_NAME[0], "test.csv")
 
 
 def get_score(recommendation_path: str, test_path: str):
@@ -88,12 +92,17 @@ def get_score(recommendation_path: str, test_path: str):
 if __name__ == "__main__":
 
     if len(sys.argv) > 1:
+
         if sys.argv[1] == "init":
             generate_purchase_subset()
         elif sys.argv[1] == "score":
+            # get_score("recommendations.pkl", "test.csv")
             main(score=True)
+        elif sys.argv[1] == "test":
+            main(unit_test=True)
         else:
             logging.error("Subcommand not recognised")
             sys.exit(1)
+
     else:
         main()
