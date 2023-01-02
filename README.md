@@ -27,7 +27,7 @@ you must have placed the train.csv and test.csv files in the data directory. If 
 you have lost them, you can generated again from the original datasets calling the program with the subcommand 'init'.
 You can find the original datasets in https://www.kaggle.com/datasets/dschettler8845/recsys-2020-ecommerce-dataset.
 
-```python
+```
     # Recreates the CSVs file from the original datasets
     python -m e_commerce init
 
@@ -42,5 +42,15 @@ You can find the original datasets in https://www.kaggle.com/datasets/dschettler
 The result of the program consists in one file in binary pickle that contains a matrix with one list 
 of recommended product codes for each client.
 
+## Activation of recommendation service
+
+Once you have generated a recommendations.pkl file, you can launch a web service for getting the recomendations.
+
+```
+    # Launches the web service 
+    python -m uvicorn e_commerce.api_web:app --host 0.0.0.0 --port 3000
+```
+
+
 ## Score reached
-In the tests carried out, an approximate efficiency of 16% was achieved.
+In the tests carried out, an approximate efficiency of 8% was achieved.
